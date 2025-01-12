@@ -3,6 +3,9 @@ name = "moneyflow"
 version = "0.1.0"
 edition = "2021"
 
+[profile.dev.package.sqlx-macros]
+opt-level = 3
+
 [dependencies]
 actix-web = "4"
 dotenvy = "0.15.7"

@@ -4,11 +4,11 @@ use serde::Deserialize;
 use crate::{db, AppState};
 
 #[derive(Deserialize, Debug)]
-struct SignUpRequest {
-    email: String,
-    password: String,
-    firstname: String,
-    lastname: String,
+pub struct SignUpRequest {
+    pub email: String,
+    pub password: String,
+    pub firstname: String,
+    pub lastname: String,
 }
 
 #[post("/auth/sign-up")]
@@ -19,7 +19,9 @@ pub async fn sign_up(state: web::Data<AppState>, data: web::Json<SignUpRequest>)
         return "Email already exists".to_string();
     }
 
-    format!("Sign Up: {:?}", data)
+    db::user::create(&db, &data).await;
+
+    "Sign Up Successful".to_string()
 }
 
 #[post("/auth/sign-in")]

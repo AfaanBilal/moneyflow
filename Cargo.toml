@@ -5,3 +5,9 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4"
+sqlx = { version = "0.8", features = [
+    "runtime-tokio",
+    "tls-rustls",
+    "mysql",
+    "chrono",
+] }

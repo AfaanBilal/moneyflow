@@ -1,7 +1,7 @@
 use actix_web::{post, web, Responder};
 use serde::Deserialize;
 
-use crate::AppState;
+use crate::{db, AppState};
 
 #[derive(Deserialize, Debug)]
 struct SignUpRequest {
@@ -14,6 +14,10 @@ struct SignUpRequest {
 #[post("/auth/sign-up")]
 pub async fn sign_up(state: web::Data<AppState>, data: web::Json<SignUpRequest>) -> impl Responder {
     let db = state.db.lock().await;
+
+    if db::user::has_with_email(&db, &data.email).await {
+        return "Email already exists".to_string();
+    }
 
     format!("Sign Up: {:?}", data)
 }

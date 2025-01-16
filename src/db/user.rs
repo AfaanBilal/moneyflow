@@ -2,7 +2,7 @@ use bcrypt::{hash, DEFAULT_COST};
 use serde::Serialize;
 use sqlx::types::chrono;
 
-use crate::controllers::auth::SignUpRequest;
+use crate::controllers::{auth::SignUpRequest, me::UpdateProfileRequest};
 
 pub async fn has_with_email(db: &sqlx::MySqlPool, email: &str) -> bool {
     sqlx::query!("SELECT * FROM users WHERE email = ?", email)
@@ -52,4 +52,16 @@ pub async fn get_by_id(db: &sqlx::MySqlPool, id: u64) -> Option<User> {
         .fetch_optional(db)
         .await
         .unwrap()
+}
+
+pub async fn update(db: &sqlx::MySqlPool, id: u64, user: &UpdateProfileRequest) {
+    sqlx::query!(
+        "UPDATE users SET firstname = ?, lastname = ? WHERE id = ?",
+        &user.firstname,
+        &user.lastname,
+        id
+    )
+    .execute(db)
+    .await
+    .unwrap();
 }

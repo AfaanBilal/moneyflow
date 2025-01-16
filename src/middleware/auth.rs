@@ -1,9 +1,5 @@
 use actix_web::{
-    body::BoxBody,
-    dev::{ServiceRequest, ServiceResponse},
-    error::ErrorUnauthorized,
-    middleware::Next,
-    Error, HttpMessage,
+    body::BoxBody, dev::{ServiceRequest, ServiceResponse}, error::ErrorUnauthorized, middleware::Next, web, Error, HttpMessage
 };
 use jsonwebtoken::{decode, DecodingKey, Validation};
 use serde_json::json;
@@ -37,7 +33,7 @@ pub async fn verify_jwt(
 
     let token = auth_str.strip_prefix("Bearer ").unwrap();
 
-    let state = req.app_data::<AppState>().unwrap();
+    let state = req.app_data::<web::Data<AppState>>().unwrap();
     let key = DecodingKey::from_secret(state.jwt_secret.as_bytes());
 
     match decode::<Claims>(token, &key, &Validation::default()) {

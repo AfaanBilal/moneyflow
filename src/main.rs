@@ -1,9 +1,10 @@
-use actix_web::{web, App, HttpServer};
+use actix_web::{middleware::from_fn, web, App, HttpServer};
 use tokio::sync::Mutex;
 
 mod controllers;
 mod db;
 mod middleware;
+mod utils;
 
 struct AppState {
     db: Mutex<sqlx::MySqlPool>,
@@ -28,8 +29,12 @@ async fn main() -> std::io::Result<()> {
             .app_data(state.clone())
             .service(controllers::auth::sign_up)
             .service(controllers::auth::sign_in)
-            .service(controllers::me::get_profile)
-            .service(controllers::me::update_profile)
+            .service(
+                web::scope("/api")
+                    .wrap(from_fn(middleware::auth::verify_jwt))
+                    .service(controllers::me::get_profile)
+                    .service(controllers::me::update_profile),
+            )
     })
     .bind(("127.0.0.1", 8080))?
     .run()

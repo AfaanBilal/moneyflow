@@ -3,6 +3,7 @@ use tokio::sync::Mutex;
 
 mod controllers;
 mod db;
+mod middleware;
 
 struct AppState {
     db: Mutex<sqlx::MySqlPool>,

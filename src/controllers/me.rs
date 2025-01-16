@@ -1,12 +1,13 @@
-use actix_web::{get, post, HttpRequest, Responder};
+use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder};
 
-use crate::utils;
+use crate::{db, utils, AppState};
 
 #[get("/me")]
-pub async fn get_profile(req: HttpRequest) -> impl Responder {
-    let user_id = utils::get_user_id(&req);
+pub async fn get_profile(state: web::Data<AppState>, req: HttpRequest) -> impl Responder {
+    let db = state.db.lock().await;
+    let user = db::user::get_by_id(&db, utils::get_user_id(&req)).await.unwrap();
 
-    format!("Profile of user: {user_id}")
+    HttpResponse::Ok().json(user)
 }
 
 #[post("/me")]

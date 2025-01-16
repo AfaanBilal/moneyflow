@@ -9,6 +9,7 @@ opt-level = 3
 [dependencies]
 actix-web = "4"
 bcrypt = "0.16.0"
+chrono = { version = "0.4.39", features = ["serde"] }
 dotenvy = "0.15.7"
 jsonwebtoken = "9.3.0"
 serde = { version = "1.0.217", features = ["derive"] }

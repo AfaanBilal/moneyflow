@@ -29,7 +29,7 @@ pub async fn create(
     let db = state.db.lock().await;
     let user_id = utils::get_user_id(&req);
 
-    let category = db::categories::create(&db, user_id, &data).await;
+    let category = db::categories::create(&db, user_id, &data).await.unwrap();
 
     HttpResponse::Ok().json(category)
 }
@@ -43,7 +43,9 @@ pub async fn show(
     let db = state.db.lock().await;
     let user_id = utils::get_user_id(&req);
 
-    let category = db::categories::get(&db, id.into_inner()).await;
+    let Some(category) = db::categories::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({"status": "error", "message": "Not found"}));
+    };
 
     if category.user_id != user_id {
         return HttpResponse::Unauthorized()
@@ -69,7 +71,9 @@ pub async fn update(
     let db = state.db.lock().await;
     let user_id = utils::get_user_id(&req);
 
-    let category = db::categories::get(&db, id.into_inner()).await;
+    let Some(category) = db::categories::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({"status": "error", "message": "Not found"}));
+    };
 
     if category.user_id != user_id {
         return HttpResponse::Unauthorized()
@@ -92,7 +96,9 @@ pub async fn destroy(
     let db = state.db.lock().await;
     let user_id = utils::get_user_id(&req);
 
-    let category = db::categories::get(&db, id.into_inner()).await;
+    let Some(category) = db::categories::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({"status": "error", "message": "Not found"}));
+    };
 
     if category.user_id != user_id {
         return HttpResponse::Unauthorized()

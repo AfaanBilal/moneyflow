@@ -24,18 +24,18 @@ pub async fn get_all_of_user(db: &sqlx::MySqlPool, user_id: u64) -> Vec<Category
     .unwrap()
 }
 
-pub async fn get(db: &sqlx::MySqlPool, id: u64) -> Category {
+pub async fn get(db: &sqlx::MySqlPool, id: u64) -> Option<Category> {
     sqlx::query_as!(Category, "SELECT * FROM categories WHERE id = ?", id)
         .fetch_one(db)
         .await
-        .unwrap()
+        .ok()
 }
 
 pub async fn create(
     db: &sqlx::MySqlPool,
     user_id: u64,
     category: &CreateCategoryRequest,
-) -> Category {
+) -> Option<Category> {
     let r = sqlx::query!(
         "INSERT INTO categories (user_id, name, description) VALUES (?, ?, ?)",
         user_id,

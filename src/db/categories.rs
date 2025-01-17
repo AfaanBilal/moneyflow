@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::controllers::categories::CreateCategoryRequest;
+use crate::controllers::categories::{CreateCategoryRequest, UpdateCategoryRequest};
 
 #[derive(Serialize)]
 pub struct Category {
@@ -47,4 +47,16 @@ pub async fn create(
     .unwrap();
 
     get(db, r.last_insert_id()).await
+}
+
+pub async fn update(db: &sqlx::MySqlPool, id: u64, category: &UpdateCategoryRequest) {
+    sqlx::query!(
+        "UPDATE categories SET name = ?, description = ? WHERE id = ?",
+        &category.name,
+        &category.description,
+        id
+    )
+    .execute(db)
+    .await
+    .unwrap();
 }

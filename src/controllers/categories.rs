@@ -53,9 +53,34 @@ pub async fn show(
     HttpResponse::Ok().json(category)
 }
 
+#[derive(Deserialize, Debug)]
+pub struct UpdateCategoryRequest {
+    pub name: String,
+    pub description: Option<String>,
+}
+
 #[put("/categories/{id}")]
-pub async fn update() -> impl Responder {
-    "Categories: Update"
+pub async fn update(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    id: web::Path<u64>,
+    data: web::Json<UpdateCategoryRequest>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let category = db::categories::get(&db, id.into_inner()).await;
+
+    if category.user_id != user_id {
+        return HttpResponse::Unauthorized()
+            .json(json!({"status": "error", "message": "Unauthorized"}));
+    }
+
+    db::categories::update(&db, category.id, &data).await;
+
+    let category = db::categories::get(&db, category.id).await;
+
+    HttpResponse::Ok().json(category)
 }
 
 #[delete("/categories/{id}")]

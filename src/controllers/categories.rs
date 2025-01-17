@@ -1,5 +1,6 @@
 use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responder};
 use serde::Deserialize;
+use serde_json::json;
 
 use crate::{db, utils, AppState};
 
@@ -34,8 +35,22 @@ pub async fn create(
 }
 
 #[get("/categories/{id}")]
-pub async fn show() -> impl Responder {
-    "Categories: Show"
+pub async fn show(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    id: web::Path<u64>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let category = db::categories::get(&db, id.into_inner()).await;
+
+    if category.user_id != user_id {
+        return HttpResponse::Unauthorized()
+            .json(json!({"status": "error", "message": "Unauthorized"}));
+    }
+
+    HttpResponse::Ok().json(category)
 }
 
 #[put("/categories/{id}")]

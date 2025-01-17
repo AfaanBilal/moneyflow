@@ -1,4 +1,5 @@
 use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responder};
+use serde::Deserialize;
 
 use crate::{db, utils, AppState};
 
@@ -12,9 +13,24 @@ pub async fn index(state: web::Data<AppState>, req: HttpRequest) -> impl Respond
     HttpResponse::Ok().json(categories)
 }
 
+#[derive(Deserialize, Debug)]
+pub struct CreateCategoryRequest {
+    pub name: String,
+    pub description: Option<String>,
+}
+
 #[post("/categories")]
-pub async fn create() -> impl Responder {
-    "Categories: Create"
+pub async fn create(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    data: web::Json<CreateCategoryRequest>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let category = db::categories::create(&db, user_id, &data).await;
+
+    HttpResponse::Ok().json(category)
 }
 
 #[get("/categories/{id}")]

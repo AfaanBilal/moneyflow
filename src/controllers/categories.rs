@@ -1,8 +1,15 @@
-use actix_web::{delete, get, post, put, Responder};
+use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responder};
+
+use crate::{db, utils, AppState};
 
 #[get("/categories")]
-pub async fn index() -> impl Responder {
-    "Categories: List"
+pub async fn index(state: web::Data<AppState>, req: HttpRequest) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let categories = db::categories::get_all_of_user(&db, user_id).await;
+
+    HttpResponse::Ok().json(categories)
 }
 
 #[post("/categories")]

@@ -60,3 +60,10 @@ pub async fn update(db: &sqlx::MySqlPool, id: u64, category: &UpdateCategoryRequ
     .await
     .unwrap();
 }
+
+pub async fn destroy(db: &sqlx::MySqlPool, id: u64) {
+    sqlx::query!("DELETE FROM categories WHERE id = ?", id)
+        .execute(db)
+        .await
+        .unwrap();
+}

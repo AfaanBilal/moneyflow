@@ -33,7 +33,12 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/api")
                     .wrap(from_fn(middleware::auth::verify_jwt))
                     .service(controllers::me::get_profile)
-                    .service(controllers::me::update_profile),
+                    .service(controllers::me::update_profile)
+                    .service(controllers::categories::index)
+                    .service(controllers::categories::create)
+                    .service(controllers::categories::show)
+                    .service(controllers::categories::update)
+                    .service(controllers::categories::destroy),
             )
     })
     .bind(("127.0.0.1", 8080))?

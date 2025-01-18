@@ -2,10 +2,7 @@ use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responde
 use serde::Deserialize;
 use serde_json::json;
 
-use crate::{
-    db::{self, transactions},
-    utils, AppState,
-};
+use crate::{db, utils, AppState};
 
 #[get("/transactions")]
 pub async fn index(state: web::Data<AppState>, req: HttpRequest) -> impl Responder {

@@ -67,3 +67,14 @@ pub async fn destroy(db: &sqlx::MySqlPool, id: u64) {
         .await
         .unwrap();
 }
+
+pub async fn update_balance(db: &sqlx::MySqlPool, id: u64, balance: u64) {
+    sqlx::query!(
+        "UPDATE categories SET balance = ? WHERE id = ?",
+        balance,
+        id
+    )
+    .execute(db)
+    .await
+    .unwrap();
+}

@@ -30,7 +30,7 @@ pub async fn create(
     data: web::Json<CreateTransactionRequest>,
 ) -> impl Responder {
     let db = state.db.lock().await;
-    let user_id = utils::get_user_id(&req);
+    let user = utils::get_authenticated_user(&req, &db).await;
 
     let Some(category) = db::categories::get(&db, data.category_id).await else {
         return HttpResponse::NotFound().json(json!({
@@ -39,14 +39,37 @@ pub async fn create(
         }));
     };
 
-    if category.user_id != user_id {
+    if category.user_id != user.id {
         return HttpResponse::Forbidden().json(json!({
             "status": "error",
             "message": "Unauthorized"
         }));
     }
 
-    let transaction = db::transactions::create(&db, user_id, &data).await;
+    if data.r#type == "DEBIT" && (user.balance < data.amount || category.balance < data.amount) {
+        return HttpResponse::BadRequest().json(json!({
+            "status": "error",
+            "message": "Insufficient balance"
+        }));
+    }
+
+    let transaction = db::transactions::create(&db, user.id, &data).await;
+
+    let user_balance = if data.r#type == "DEBIT" {
+        user.balance - data.amount
+    } else {
+        user.balance + data.amount
+    };
+
+    db::user::update_balance(&db, user.id, user_balance).await;
+
+    let category_balance = if data.r#type == "DEBIT" {
+        category.balance - data.amount
+    } else {
+        category.balance + data.amount
+    };
+
+    db::categories::update_balance(&db, category.id, category_balance).await;
 
     HttpResponse::Created().json(transaction)
 }

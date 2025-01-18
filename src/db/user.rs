@@ -65,3 +65,10 @@ pub async fn update(db: &sqlx::MySqlPool, id: u64, user: &UpdateProfileRequest) 
     .await
     .unwrap();
 }
+
+pub async fn update_balance(db: &sqlx::MySqlPool, id: u64, balance: u64) {
+    sqlx::query!("UPDATE users SET balance = ? WHERE id = ?", balance, id)
+        .execute(db)
+        .await
+        .unwrap();
+}

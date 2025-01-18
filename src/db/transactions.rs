@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::controllers::transactions::CreateTransactionRequest;
+use crate::controllers::transactions::{CreateTransactionRequest, UpdateTransactionRequest};
 
 #[derive(Serialize)]
 pub struct Transaction {
@@ -44,4 +44,16 @@ pub async fn create(
         .unwrap();
 
     get(db, r.last_insert_id()).await.unwrap()
+}
+
+pub async fn update(db: &sqlx::MySqlPool, id: u64, transaction: &UpdateTransactionRequest) {
+    sqlx::query!(
+        "UPDATE transactions SET memo = ?, description = ? WHERE id = ?",
+        &transaction.memo,
+        &transaction.description,
+        id
+    )
+    .execute(db)
+    .await
+    .unwrap();
 }

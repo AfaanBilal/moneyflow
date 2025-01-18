@@ -100,9 +100,41 @@ pub async fn show(
     HttpResponse::Ok().json(transaction)
 }
 
+#[derive(Deserialize)]
+pub struct UpdateTransactionRequest {
+    pub memo: String,
+    pub description: Option<String>,
+}
+
 #[put("/transactions/{id}")]
-pub async fn update() -> impl Responder {
-    "Transactions: Update"
+pub async fn update(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    id: web::Path<u64>,
+    data: web::Json<UpdateTransactionRequest>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let Some(transaction) = db::transactions::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({
+            "status": "error",
+            "message": "Transaction not found"
+        }));
+    };
+
+    if transaction.user_id != user_id {
+        return HttpResponse::Forbidden().json(json!({
+            "status": "error",
+            "message": "Unauthorized"
+        }));
+    };
+
+    db::transactions::update(&db, transaction.id, &data).await;
+
+    let transaction = db::transactions::get(&db, transaction.id).await.unwrap();
+
+    HttpResponse::Ok().json(transaction)
 }
 
 #[delete("/transactions/{id}")]

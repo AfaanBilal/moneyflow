@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "UPDATE categories SET balance = ? WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "526edd29ba46b5ff37d8954503c38ae05cf469b4ba500a12f13f724bae0c17c1"
+}

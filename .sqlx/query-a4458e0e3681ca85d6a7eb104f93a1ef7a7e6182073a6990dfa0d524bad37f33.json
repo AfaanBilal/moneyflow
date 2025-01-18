@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "UPDATE transactions SET memo = ?, description = ? WHERE id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "a4458e0e3681ca85d6a7eb104f93a1ef7a7e6182073a6990dfa0d524bad37f33"
+}

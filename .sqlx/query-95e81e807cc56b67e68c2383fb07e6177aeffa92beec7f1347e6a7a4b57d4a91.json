@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "INSERT INTO categories (user_id, name, description) VALUES (?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "95e81e807cc56b67e68c2383fb07e6177aeffa92beec7f1347e6a7a4b57d4a91"
+}

@@ -75,8 +75,29 @@ pub async fn create(
 }
 
 #[get("/transactions/{id}")]
-pub async fn show() -> impl Responder {
-    "Transactions: Show"
+pub async fn show(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    id: web::Path<u64>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let Some(transaction) = db::transactions::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({
+            "status": "error",
+            "message": "Transaction not found"
+        }));
+    };
+
+    if transaction.user_id != user_id {
+        return HttpResponse::Forbidden().json(json!({
+            "status": "error",
+            "message": "Unauthorized"
+        }));
+    }
+
+    HttpResponse::Ok().json(transaction)
 }
 
 #[put("/transactions/{id}")]

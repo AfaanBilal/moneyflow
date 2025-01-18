@@ -4,15 +4,15 @@ use crate::controllers::transactions::CreateTransactionRequest;
 
 #[derive(Serialize)]
 pub struct Transaction {
-    id: u64,
-    user_id: u64,
-    category_id: u64,
-    r#type: String,
-    amount: u64,
-    memo: String,
-    description: Option<String>,
-    created_at: chrono::NaiveDateTime,
-    updated_at: chrono::NaiveDateTime,
+    pub id: u64,
+    pub user_id: u64,
+    pub category_id: u64,
+    pub r#type: String,
+    pub amount: u64,
+    pub memo: String,
+    pub description: Option<String>,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: chrono::NaiveDateTime,
 }
 
 pub async fn get_all_of_user(db: &sqlx::MySqlPool, user_id: u64) -> Vec<Transaction> {

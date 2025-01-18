@@ -57,3 +57,10 @@ pub async fn update(db: &sqlx::MySqlPool, id: u64, transaction: &UpdateTransacti
     .await
     .unwrap();
 }
+
+pub async fn destroy(db: &sqlx::MySqlPool, id: u64) {
+    sqlx::query!("DELETE FROM transactions WHERE id = ?", id)
+        .execute(db)
+        .await
+        .unwrap();
+}

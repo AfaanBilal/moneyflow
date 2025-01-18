@@ -2,7 +2,10 @@ use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responde
 use serde::Deserialize;
 use serde_json::json;
 
-use crate::{db, utils, AppState};
+use crate::{
+    db::{self, transactions},
+    utils, AppState,
+};
 
 #[get("/transactions")]
 pub async fn index(state: web::Data<AppState>, req: HttpRequest) -> impl Responder {
@@ -138,6 +141,58 @@ pub async fn update(
 }
 
 #[delete("/transactions/{id}")]
-pub async fn destroy() -> impl Responder {
-    "Transactions: Destroy"
+pub async fn destroy(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    id: web::Path<u64>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user = utils::get_authenticated_user(&req, &db).await;
+
+    let Some(transaction) = db::transactions::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({
+            "status": "error",
+            "message": "Transaction not found"
+        }));
+    };
+
+    if transaction.user_id != user.id {
+        return HttpResponse::Forbidden().json(json!({
+            "status": "error",
+            "message": "Unauthorized"
+        }));
+    };
+
+    let category = db::categories::get(&db, transaction.category_id)
+        .await
+        .unwrap();
+
+    if transaction.r#type == "CREDIT"
+        && (transaction.amount > user.balance || transaction.amount > category.balance)
+    {
+        return HttpResponse::BadRequest().json(json!({
+            "status": "error",
+            "message": "Insufficient balance"
+        }));
+    }
+
+    db::transactions::destroy(&db, transaction.id).await;
+
+    let user_balance = if transaction.r#type == "CREDIT" {
+        user.balance - transaction.amount
+    } else {
+        user.balance + transaction.amount
+    };
+
+    db::user::update_balance(&db, user.id, user_balance).await;
+
+    let category_balance = if transaction.r#type == "CREDIT" {
+        category.balance - transaction.amount
+    } else {
+        category.balance + transaction.amount
+    };
+
+    db::categories::update_balance(&db, category.id, category_balance).await;
+
+    HttpResponse::Ok().json(json!({"status": "success"}))
 }

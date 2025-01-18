@@ -2,6 +2,8 @@
 name = "moneyflow"
 version = "0.1.0"
 edition = "2021"
+authors = ["Afaan Bilal <https://afaan.dev>"]
+license = "MIT"
 
 [profile.dev.package.sqlx-macros]
 opt-level = 3

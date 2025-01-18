@@ -1,3 +1,10 @@
+--
+-- 💵 MoneyFlow
+--
+-- @author Afaan Bilal
+-- @link   https://afaan.dev
+-- @link   https://github.com/AfaanBilal/moneyflow
+--
 CREATE TABLE `users` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,

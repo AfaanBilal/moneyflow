@@ -1,3 +1,10 @@
+/**
+ * 💵 MoneyFlow
+ *
+ * @author Afaan Bilal
+ * @link   https://afaan.dev
+ * @link   https://github.com/AfaanBilal/moneyflow
+ */
 use actix_web::{middleware::from_fn, web, App, HttpServer};
 use tokio::sync::Mutex;
 

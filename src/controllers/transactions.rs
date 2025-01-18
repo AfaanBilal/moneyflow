@@ -1,3 +1,10 @@
+/**
+ * 💵 MoneyFlow
+ *
+ * @author Afaan Bilal
+ * @link   https://afaan.dev
+ * @link   https://github.com/AfaanBilal/moneyflow
+ */
 use actix_web::{delete, get, post, put, web, HttpRequest, HttpResponse, Responder};
 use serde::Deserialize;
 use serde_json::json;

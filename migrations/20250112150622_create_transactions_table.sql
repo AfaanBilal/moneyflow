@@ -1,3 +1,10 @@
+--
+-- 💵 MoneyFlow
+--
+-- @author Afaan Bilal
+-- @link   https://afaan.dev
+-- @link   https://github.com/AfaanBilal/moneyflow
+--
 CREATE TABLE `transactions` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL,

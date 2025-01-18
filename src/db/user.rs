@@ -1,3 +1,10 @@
+/**
+ * 💵 MoneyFlow
+ *
+ * @author Afaan Bilal
+ * @link   https://afaan.dev
+ * @link   https://github.com/AfaanBilal/moneyflow
+ */
 use bcrypt::{hash, DEFAULT_COST};
 use serde::Serialize;
 use sqlx::types::chrono;

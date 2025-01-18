@@ -1,3 +1,10 @@
+/**
+ * 💵 MoneyFlow
+ *
+ * @author Afaan Bilal
+ * @link   https://afaan.dev
+ * @link   https://github.com/AfaanBilal/moneyflow
+ */
 use serde::Serialize;
 
 use crate::controllers::categories::{CreateCategoryRequest, UpdateCategoryRequest};

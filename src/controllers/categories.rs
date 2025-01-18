@@ -109,3 +109,26 @@ pub async fn destroy(
 
     HttpResponse::Ok().json(json!({"status": "success"}))
 }
+
+#[get("/categories/{id}/transactions")]
+pub async fn transactions(
+    state: web::Data<AppState>,
+    req: HttpRequest,
+    id: web::Path<u64>,
+) -> impl Responder {
+    let db = state.db.lock().await;
+    let user_id = utils::get_user_id(&req);
+
+    let Some(category) = db::categories::get(&db, id.into_inner()).await else {
+        return HttpResponse::NotFound().json(json!({"status": "error", "message": "Not found"}));
+    };
+
+    if category.user_id != user_id {
+        return HttpResponse::Unauthorized()
+            .json(json!({"status": "error", "message": "Unauthorized"}));
+    }
+
+    let transactions = db::transactions::get_all_of_category(&db, category.id).await;
+
+    HttpResponse::Ok().json(transactions)
+}

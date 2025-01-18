@@ -11,3 +11,11 @@ pub fn get_user_id(req: &HttpRequest) -> u64 {
 pub async fn get_authenticated_user(req: &HttpRequest, db: &sqlx::MySqlPool) -> db::user::User {
     db::user::get_by_id(db, get_user_id(req)).await.unwrap()
 }
+
+pub fn is_credit(t: &str) -> bool {
+    t == "CREDIT"
+}
+
+pub fn is_debit(t: &str) -> bool {
+    t == "DEBIT"
+}

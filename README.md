@@ -56,11 +56,11 @@ cargo run
 | PUT    | /api/categories/`{id}`              | ✅     | Update the category matching the `id`.                        |
 | DELETE | /api/categories/`{id}`              | ✅     | Delete the category matching the `id`.                        |
 | GET    | /api/categories/`{id}`/transactions | ✅     | Get a list of transactions in the category matching the `id`. |
-| GET    | /transactions                       | ✅     | Get a list of transactions.                                   |
-| POST   | /transactions                       | ✅     | Create a transaction.                                         |
-| GET    | /transactions/`{id}`                | ✅     | Get the transaction with matching the `id`.                   |
-| PUT    | /transactions/`{id}`                | ✅     | Update the transaction matching the `id`.                     |
-| DELETE | /transactions/`{id}`                | ✅     | Delete the transaction matching the `id`.                     |
+| GET    | /api/transactions                   | ✅     | Get a list of transactions.                                   |
+| POST   | /api/transactions                   | ✅     | Create a transaction.                                         |
+| GET    | /api/transactions/`{id}`            | ✅     | Get the transaction with matching the `id`.                   |
+| PUT    | /api/transactions/`{id}`            | ✅     | Update the transaction matching the `id`.                     |
+| DELETE | /api/transactions/`{id}`            | ✅     | Delete the transaction matching the `id`.                     |
 
 ## Authentication Flow
 

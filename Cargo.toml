@@ -9,6 +9,7 @@ license = "MIT"
 opt-level = 3
 
 [dependencies]
+actix-cors = "0.7.0"
 actix-extensible-rate-limit = "0.4.0"
 actix-web = "4"
 bcrypt = "0.16.0"

@@ -1,5 +1,6 @@
 use std::time::Duration;
 
+use actix_cors::Cors;
 use actix_extensible_rate_limit::{
     backend::{memory::InMemoryBackend, SimpleInputFunctionBuilder},
     RateLimiter,
@@ -41,6 +42,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(Cors::permissive())
             .wrap(
                 RateLimiter::builder(
                     rate_limiter_backend.clone(),

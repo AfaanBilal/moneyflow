@@ -44,23 +44,23 @@ cargo run
 
 ![API](./assets/api.png)
 
-| Method | Path                                | Auth? | Description                                                   |
-| :----- | :---------------------------------- | :---- | :------------------------------------------------------------ |
-| POST   | /auth/sign-up                       | ⬜     | Create a new account.                                         |
-| POST   | /auth/sign-in                       | ⬜     | Sign in. Returns a JWT on success.                            |
-| GET    | /api/me                             | ✅     | Get the authenticated user's details.                         |
-| POST   | /api/me                             | ✅     | Update the authenticated user's details.                      |
-| GET    | /api/categories                     | ✅     | Get a list of categories.                                     |
-| POST   | /api/categories                     | ✅     | Create an category.                                           |
-| GET    | /api/categories/`{id}`              | ✅     | Get the category with matching the `id`.                      |
-| PUT    | /api/categories/`{id}`              | ✅     | Update the category matching the `id`.                        |
-| DELETE | /api/categories/`{id}`              | ✅     | Delete the category matching the `id`.                        |
-| GET    | /api/categories/`{id}`/transactions | ✅     | Get a list of transactions in the category matching the `id`. |
-| GET    | /api/transactions                   | ✅     | Get a list of transactions.                                   |
-| POST   | /api/transactions                   | ✅     | Create a transaction.                                         |
-| GET    | /api/transactions/`{id}`            | ✅     | Get the transaction with matching the `id`.                   |
-| PUT    | /api/transactions/`{id}`            | ✅     | Update the transaction matching the `id`.                     |
-| DELETE | /api/transactions/`{id}`            | ✅     | Delete the transaction matching the `id`.                     |
+| Method | Path                                | Auth? | Description                                          |
+| :----- | :---------------------------------- | :---- | :--------------------------------------------------- |
+| POST   | /auth/sign-up                       | ⬜     | Create a new account.                                |
+| POST   | /auth/sign-in                       | ⬜     | Sign in. Returns a JWT on success.                   |
+| GET    | /api/me                             | ✅     | Get the authenticated user's details.                |
+| POST   | /api/me                             | ✅     | Update the authenticated user's details.             |
+| GET    | /api/categories                     | ✅     | List categories of the authenticated user.           |
+| POST   | /api/categories                     | ✅     | Create a category.                                   |
+| GET    | /api/categories/`{id}`              | ✅     | Get the category with matching the `id`.             |
+| PUT    | /api/categories/`{id}`              | ✅     | Update the category matching the `id`.               |
+| DELETE | /api/categories/`{id}`              | ✅     | Delete the category matching the `id`.               |
+| GET    | /api/categories/`{id}`/transactions | ✅     | List transactions in the category matching the `id`. |
+| GET    | /api/transactions                   | ✅     | List transactions of the authenticated user.         |
+| POST   | /api/transactions                   | ✅     | Create a transaction.                                |
+| GET    | /api/transactions/`{id}`            | ✅     | Get the transaction with matching the `id`.          |
+| PUT    | /api/transactions/`{id}`            | ✅     | Update the transaction matching the `id`.            |
+| DELETE | /api/transactions/`{id}`            | ✅     | Delete the transaction matching the `id`.            |
 
 ## Authentication Flow
 

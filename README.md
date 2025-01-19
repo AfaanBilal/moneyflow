@@ -17,11 +17,18 @@ Learn about creating this in my Udemy course: [Creating an API server in Rust wi
 ## Run with Docker <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" title="Docker" width="50px" style="float:right" />
 
 ````
-docker run --rm -it -p 8000:8000 \
+docker run --rm -it -p 8000:80 \
     -e DATABASE_URL=[DB URL] \
     -e JWT_SECRET=[RANDOM SECRET] \
     afaanbilal/moneyflow
 ````
+
+> Note: When building the docker image yourself:
+>
+> - Set the host to `0.0.0.0` instead of `127.0.0.1`
+> - Set the port to `80` instead of `8080`
+>
+> in `main.rs` (in the call to `.bind()`).
 
 ---
 

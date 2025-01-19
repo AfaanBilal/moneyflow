@@ -1,10 +1,3 @@
-use std::time::Duration;
-
-use actix_cors::Cors;
-use actix_extensible_rate_limit::{
-    backend::{memory::InMemoryBackend, SimpleInputFunctionBuilder},
-    RateLimiter,
-};
 /**
  * 💵 MoneyFlow
  *
@@ -12,6 +5,14 @@ use actix_extensible_rate_limit::{
  * @link   https://afaan.dev
  * @link   https://github.com/AfaanBilal/moneyflow
  */
+use std::time::Duration;
+
+use actix_cors::Cors;
+use actix_extensible_rate_limit::{
+    backend::{memory::InMemoryBackend, SimpleInputFunctionBuilder},
+    RateLimiter,
+};
+
 use actix_web::{middleware::from_fn, web, App, HttpServer};
 use tokio::sync::Mutex;
 

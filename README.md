@@ -6,7 +6,7 @@ MoneyFlow REST API Server in Rust with Actix Web, SQLx and JWT.
 ---
 
 ## Udemy Course
-Learn about creating this in my Udemy course: [Creating an API server in Rust with Actix Web, SQLx and JWT by Afaan Bilal](https://www.udemy.com/course/draft/6386919/?referralCode=0C3C85FE260C2016C334).
+Learn about creating this in my Udemy course: [Creating an API server in Rust with Actix Web, SQLx and JWT by Afaan Bilal](https://www.udemy.com/course/rust-api-server-actix-sqlx-jwt/?referralCode=0C3C85FE260C2016C334).
 
 ![Udemy Course](./assets/rust-actix-sqlx-course-udemy.png)
 ---
